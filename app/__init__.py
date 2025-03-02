@@ -16,8 +16,8 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    #db_init(app.config["DATABASE"])
-    
+    db_init(app.config["DATABASE"], app.static_folder + "schema.sql")
+
     # register blueprints
     from app.main import blueprint as blueprint_main
     from app.errorhandler import blueprint as blueprint_errorhandler

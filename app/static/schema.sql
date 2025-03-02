@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS user (
     id              TEXT PRIMARY KEY,
-    username        TEXT PRIMARY KEY,
+    username        TEXT NOT NULL UNIQUE,
     hashed_password TEXT NOT NULL,
     email           TEXT,
     creation_date   TEXT
@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS user (
 CREATE TABLE IF NOT EXISTS election (
     id              TEXT PRIMARY KEY,
     name            TEXT NOT NULL,
-    public_id       TEXT PRIMARY KEY,
+    public_id       TEXT NOT NULL UNIQUE,
     hashed_password TEXT,
     creation_date   TEXT,
     expiration_date TEXT,

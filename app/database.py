@@ -33,10 +33,10 @@ class SQLiteHandler:
         self.conn.close()
 
 
-def db_init(path):
+def db_init(path, schema):
     Path(path_split(path)[0]).mkdir(parents=True, exist_ok=True)
 
-    with open("app/db-structure", "rt", encoding="utf-8") as f:
+    with open(schema, "rt", encoding="utf-8") as f:
         structure = f.read()
 
     with SQLiteHandler(path) as cur:
