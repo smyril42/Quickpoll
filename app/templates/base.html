@@ -1,0 +1,28 @@
+<!Doctype html>
+<html>
+
+<title>{% block title %}{% endblock %}</title>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+
+<div class="topnav">
+  <a {% block active_home %}{% endblock %} href="/app/static">Home</a>
+  <a {% block active_student %}{% endblock %} href="/vote">Vote</a>
+  <a {% block active_tutoring %}{% endblock %} href="/help">Help</a>
+  {% block topnav %}{% endblock %}
+</div>
+
+<div style="padding: 0px 16px;">
+
+{% block body %}
+{% endblock  %}
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+# python virtual environments
+.venv
+venv
+
+# app instance folder
+instance
+
+.DS_Store
+.idea
+
+**/__pycache__
