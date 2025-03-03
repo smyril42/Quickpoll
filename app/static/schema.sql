@@ -1,12 +1,14 @@
 CREATE TABLE IF NOT EXISTS user (
-    id              TEXT PRIMARY KEY,
+    id              INTEGER PRIMARY KEY AUTOINCREMENT ,
     username        TEXT NOT NULL UNIQUE,
-    hashed_password TEXT NOT NULL,
     email           TEXT,
-    creation_date   TEXT
+    hashed_password TEXT NOT NULL,
+    salt            TEXT NOT NULL,
+    creation_date   TEXT,
+    is_admin        INTEGER NOT NULL DEFAULT (0)
 );
 CREATE TABLE IF NOT EXISTS election (
-    id              TEXT PRIMARY KEY,
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
     name            TEXT NOT NULL,
     public_id       TEXT NOT NULL UNIQUE,
     hashed_password TEXT,

@@ -11,8 +11,10 @@
 
 <div class="topnav">
   <a {% block active_home %}{% endblock %} href="/">Home</a>
-  <a {% block active_student %}{% endblock %} href="/vote">Vote</a>
-  <a {% block active_tutoring %}{% endblock %} href="/help">Help</a>
+  <a {% block active_vote %}{% endblock %} href="/vote">Vote</a>
+  <a {% block active_about %}{% endblock %} href="/about">About</a>
+  <a {% block active_help %}{% endblock %} href="/help">Help</a>
+  <a class="button" onclick="togglePopup()">Login</a>
   {% block topnav %}{% endblock %}
 </div>
 
