@@ -1,6 +1,7 @@
 <a id="readme-top"></a>
 
 [![Contributors](https://img.shields.io/github/contributors/smyril42/Quickpoll?style=for-the-badge)](https://github.com/smyril42/Quickpoll/graphs/contributors)
+[![Commit Activity](https://img.shields.io/github/commit-activity/t/smyril42/Quickpoll?style=for-the-badge)](https://github.com/smyril42/Quickpoll/commits/)
 [![Forks](https://img.shields.io/github/forks/smyril42/Quickpoll?style=for-the-badge)](https://github.com/smyril42/Quickpoll/network/members)
 [![Stargazers](https://img.shields.io/github/stars/smyril42/Quickpoll?style=for-the-badge)](https://github.com/smyril42/Quickpoll/stargazers)
 [![Issues](https://img.shields.io/github/issues/smyril42/Quickpoll?style=for-the-badge)](https://github.com/smyril42/Quickpoll/issues)
