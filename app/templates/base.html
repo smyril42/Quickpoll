@@ -1,20 +1,27 @@
 <!Doctype html>
 <html>
 
-<title>{% block title %}{% endblock %}</title>
+<title>Quickpoll - {% block title %}{% endblock %}</title>
 
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
 
 <div class="topnav">
-  <a {% block active_home %}{% endblock %} href="/">Home</a>
-  <a {% block active_vote %}{% endblock %} href="/vote">Vote</a>
-  <a {% block active_about %}{% endblock %} href="/about">About</a>
-  <a {% block active_help %}{% endblock %} href="/help">Help</a>
-  <a class="button" onclick="togglePopup()">Login</a>
+  <a style="line-height: 1.2" {% block active_home %}{% endblock %} href="/">Home</a>
+  <a style="line-height: 1.2" {% block active_vote %}{% endblock %} href="/vote">Vote</a>
+  <a style="line-height: 1.2" {% block active_about %}{% endblock %} href="/about">About</a>
+  <a style="line-height: 1.2" {% block active_help %}{% endblock %} href="/help">Help</a>
+  {% if current_user.is_authenticated %}
+    <a style="line-height: 1.2; float: right" {% block active_profile %}{% endblock %} href="/profile">Profile</a>
+    <a style="line-height: 1.2; float: right" href="/logout">Logout</a>
+  {% else %}
+    <a style="line-height: 1.2; float: right"  {% block active_login %}{% endblock %} href="/login">Login</a>
+    <a style="line-height: 1.2; float: right" {% block active_signup %}{% endblock %} href="/signup">Sign Up</a>
+  {% endif %}
   {% block topnav %}{% endblock %}
 </div>
 

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block active_login %}class="active"{% endblock %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <div class="column is-4 is-offset-4">
+
+        <div style="margin-top: 30px" class="box">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification is-danger">
+                        {{ messages[0] }}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <h3 class="title">Login</h3>
+            <form method="POST" action="/login">
+                <input style="margin-bottom: .5em" class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
+                <input style="margin-bottom: .5em" class="input is-large" type="password" name="password" placeholder="Password">
+                <input type="checkbox" name="remember">
+                <label style="margin-bottom: .5em" class="checkbox" for="remember">Remember me</label>
+                <button type="submit" class="button is-block is-info is-large is-fullwidth">Login</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

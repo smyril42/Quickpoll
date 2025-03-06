@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block active_signup %}class="active"{% endblock %}
+
+{% block title %}Signup{% endblock %}
+
+{% block body %}
+    <div class="column is-4 is-offset-4">
+
+        <div style="margin-top: 30px" class="box">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification is-danger">
+                        {{ messages[0] }}<br>Do you want to <a href="{{ url_for('auth.login') }}">login</a>?
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <h3 class="title">Sign Up</h3>
+            <form method="POST" action="/signup">
+                <input style="margin-bottom: .5em" class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
+                <input style="margin-bottom: .5em" class="input is-large" type="text" name="username" placeholder="Username" autofocus="">
+                <input style="margin-bottom: .5em" class="input is-large" type="password" name="password" placeholder="Password">
+                <button type="submit" class="button is-block is-info is-large is-fullwidth">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

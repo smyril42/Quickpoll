@@ -1,43 +1,43 @@
-from sqlite3 import connect, Row
-from pathlib import Path
-from os.path import split as path_split
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from flask_login import UserMixin
 
 
-__all__ = "SQLiteHandler", "db_init"
+__all__ = "db", "User"
 
 
-class SQLiteHandler:
-    """
-    how to connect to sqlite database:
-
-    # # #
-    with SQLiteHandler(path) as cur:
-        # cur.execute(command)
-        ...
-    # # #
-
-    will commit and close the connection automatically
-    """
-    def __init__(self, file, row=True):
-        self.file = file
-        self.row = row
-
-    def __enter__(self):
-        self.conn = connect(self.file)
-        if self.row:
-            self.conn.row_factory = lambda *args, **kwargs: dict(Row(*args, **kwargs))
-        return self.conn.cursor()
-
-    def __exit__(self, err_type, value, traceback):
-        self.conn.commit()
-        self.conn.close()
+class Base(DeclarativeBase):
+    pass
 
 
-def db_init(path, schema):
-    Path(path_split(path)[0]).mkdir(parents=True, exist_ok=True)
+db = SQLAlchemy(model_class=Base)
 
-    with open(schema, "rt", encoding="utf-8") as f:
-        structure = f.read()
 
-    with SQLiteHandler(path) as cur:
-        cur.executescript(structure)
+class User(UserMixin, db.Model):
+    id: Mapped[int] = mapped_column(db.Integer, primary_key=True, autoincrement=True)
+    username: Mapped[str] = mapped_column(db.String, unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(db.String, unique=True, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(db.String, nullable=False)
+    salt: Mapped[str] = mapped_column(db.String, nullable=False)
+    creation_date = mapped_column(db.DateTime, nullable=False)
+    is_admin: Mapped[int] = mapped_column(db.Boolean, nullable=False, default=0)
+
+    def __init__(self, username, email, hashed_password, salt, creation_date, is_admin=None):
+        self.username = username
+        self.email = email
+        self.hashed_password=hashed_password
+        self.salt=salt
+        self.creation_date=creation_date
+        self.is_admin=0 if is_admin is None else is_admin
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)
