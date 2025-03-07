@@ -1,6 +1,6 @@
-import os
-from flask import Flask
+from os.path import join as join_path
 from pathlib import Path
+from flask import Flask
 from flask_login import LoginManager
 
 from .database import db, User
@@ -10,7 +10,7 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="jhvfaweghwh923t4gnoi.g,m,x0q.rklvbklgua",
-        DATABASE=os.path.join(app.instance_path, "main.db"),
+        DATABASE=join_path(app.instance_path, "main.db"),
         SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
     )
     Path(app.instance_path).mkdir(parents=True, exist_ok=True)

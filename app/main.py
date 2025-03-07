@@ -18,7 +18,9 @@ def about():
 
 @blueprint.route("/help")
 def help_page():
-    return redirect("https://github.com/smyril42/Quickpoll/issues/new?labels=bug&template=bug-report.md")
+    return redirect(
+        "https://github.com/smyril42/Quickpoll/issues/new?labels=bug&template=bug-report.md"
+    )
 
 
 @blueprint.route("/vote")

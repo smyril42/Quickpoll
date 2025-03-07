@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, flash, url_for
-from flask_login import login_user, login_required, logout_user
 from string import ascii_letters, digits, punctuation
 from datetime import datetime
 from hashlib import sha256
 from random import SystemRandom
+from flask import Blueprint, render_template, request, redirect, flash, url_for
+from flask_login import login_user, login_required, logout_user
 
 from .database import db, User
 
@@ -61,6 +61,6 @@ def generate_salt():
 
 def hashed(text, salt, iterations=3):
     assert iterations > 0
-    for i in range(iterations):
+    for _ in range(iterations):
         text = sha256((salt + text + salt).encode("utf-8")).hexdigest()
     return text
