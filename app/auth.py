@@ -22,6 +22,7 @@ def login():
     if user is None or user.hashed_password != hashed(password, user.salt):
         flash('Invalid email or password! Please try again.')
         return redirect(url_for("auth.login"))
+    login_user(user, remember=remember)
     return redirect(url_for("main.profile"))
 
 
