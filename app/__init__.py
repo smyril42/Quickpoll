@@ -1,3 +1,4 @@
+from secrets import token_urlsafe
 from os.path import join as join_path
 from pathlib import Path
 from flask import Flask
@@ -8,8 +9,19 @@ from .database import db, User
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+
+    secret_path = join_path(app.instance_path, 'SECRET')
+    try:
+        with app.open_instance_resource("SECRET", "rb") as f:
+            secret_key = f.read().decode('utf-8')
+    except FileNotFoundError:
+        with app.open_instance_resource(secret_path, 'xb') as f:
+            secret_key = token_urlsafe(64)
+            f.write(secret_key.encode('utf-8'))
+            print(f"Created secret key at {secret_path}")
+
     app.config.from_mapping(
-        SECRET_KEY="jhvfaweghwh923t4gnoi.g,m,x0q.rklvbklgua",
+        SECRET_KEY=secret_key,
         DATABASE=join_path(app.instance_path, "main.db"),
         SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
     )
