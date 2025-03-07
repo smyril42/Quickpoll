@@ -50,4 +50,4 @@ def static(filepath):
 @login_required
 def create():
     if request.method == "GET":
-        return render_template("create_election.html")
+        return render_template("create_election.html", current_user=current_user)
