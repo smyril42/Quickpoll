@@ -6,18 +6,19 @@ from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import login_user, login_required, logout_user
 
 from .database import db, User
-
+from .forms import LoginForm
 
 blueprint = Blueprint('auth', __name__)
 
 
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
+    form = LoginForm()
     if request.method == 'GET':
-        return render_template('login.html')
-    email = request.form.get('email')
-    password = request.form.get('password')
-    remember = bool(request.form.get('remember'))
+        return render_template('login.html', form=form)
+    email = form.email.data
+    password = form.password.data
+    remember = bool(form.remember.data)
 
     user = User.query.filter_by(email=email).first()
     if user is None or user.hashed_password != hashed(password, user.salt):
