@@ -44,3 +44,10 @@ def static(filepath):
     if request.referrer != 'http://127.0.0.1/':
         return render_template('404.html')
     return send_file(filepath)
+
+
+@blueprint.route("/create", methods=["GET", "POST"])
+@login_required
+def create():
+    if request.method == "GET":
+        return render_template("create_election.html")
