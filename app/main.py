@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template, request, send_file, redirect
 from flask_login import login_required, current_user
 
+
 blueprint = Blueprint("main", __name__)
+
 
 @blueprint.route("/home")
 @blueprint.route("/")
@@ -11,7 +13,7 @@ def home():
 
 @blueprint.route("/about")
 def about():
-    return redirect("https://github.com/smyril42/Quickpoll")
+    return render_template("about.html")
 
 
 @blueprint.route("/help")

@@ -1,14 +1,15 @@
-import string
-
 from flask import Blueprint, render_template, request, redirect, flash, url_for
+from flask_login import login_user, login_required, logout_user
+from string import ascii_letters, digits, punctuation
 from datetime import datetime
 from hashlib import sha256
 from random import SystemRandom
-from flask_login import login_user, login_required, logout_user
 
 from .database import db, User
 
+
 blueprint = Blueprint('auth', __name__)
+
 
 @blueprint.route('/login', methods=['GET', 'POST'])
 def login():
@@ -55,7 +56,7 @@ def logout():
 
 
 def generate_salt():
-    return ''.join(SystemRandom().choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(16))
+    return ''.join(SystemRandom().choice(ascii_letters + digits + punctuation) for _ in range(16))
 
 
 def hashed(text, salt, iterations=3):

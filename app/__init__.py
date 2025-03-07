@@ -6,7 +6,6 @@ from flask_login import LoginManager
 from .database import db, User
 
 
-
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
@@ -24,11 +23,9 @@ def create_app(test_config=None):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
-
     with app.app_context():
         db.init_app(app)
         db.create_all()
-
 
     # register blueprints
     from app.main import blueprint as blueprint_main
