@@ -16,6 +16,7 @@
   <a style="line-height: 1.2" {% block active_about %}{% endblock %} href="/about">About</a>
   <a style="line-height: 1.2" {% block active_help %}{% endblock %} href="/help">Help</a>
   {% if current_user.is_authenticated %}
+    <a style="line-height: 1.2" {% block active_create_election %}{% endblock %} href="/create">Create</a>
     <a style="line-height: 1.2; float: right" {% block active_profile %}{% endblock %} href="/profile">Profile</a>
     <a style="line-height: 1.2; float: right" href="/logout">Logout</a>
   {% else %}
