@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, request, redirect, flash, url_for
 from flask_login import login_user, login_required, logout_user
 
 from .database import db, User
-from .forms import LoginForm
+from .forms import LoginForm, SignupForm
 
 blueprint = Blueprint('auth', __name__)
 
@@ -30,11 +30,12 @@ def login():
 
 @blueprint.route('/signup', methods=['GET', 'POST'])
 def signup():
+    form = SignupForm()
     if request.method == 'GET':
-        return render_template('signup.html')
-    email = request.form.get('email')
-    username = request.form.get('username')
-    password = request.form.get('password')
+        return render_template('signup.html', form=form)
+    email = form.email.data
+    username = form.username.data
+    password = form.password.data
 
     if User.query.filter_by(email=email).first() is not None:
         flash("This email is already in use.")

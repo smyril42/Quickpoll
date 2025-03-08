@@ -17,10 +17,11 @@
             {% endwith %}
             <h3 class="title">Sign Up</h3>
             <form method="POST" action="/signup">
-                <input style="margin-bottom: .5em" class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
-                <input style="margin-bottom: .5em" class="input is-large" type="text" name="username" placeholder="Username" autofocus="">
-                <input style="margin-bottom: .5em" class="input is-large" type="password" name="password" placeholder="Password">
-                <button type="submit" class="button is-block is-info is-large is-fullwidth">Sign Up</button>
+                {{ form.email(placeholder="Email", class="input is-large", style="margin-bottom: .5em") }}
+                {{ form.username(placeholder="Username", class="input is-large", style="margin-bottom: .5em") }}
+                {{ form.password(placeholder="Password", class="input is-large", style="margin-bottom: .5em") }}
+                {{ form.submit(class="button is-block is-info is-large is-fullwidth") }}
+                <a href="{{ url_for("auth.login") }}">Login to existing account?</a>
             </form>
         </div>
     </div>
