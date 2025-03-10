@@ -10,6 +10,10 @@ from .database import db, User
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 
+    # create instance directory if not exists
+    Path(app.instance_path).mkdir(parents=True, exist_ok=True)
+
+    # get secret, generate if not exists
     secret_path = join_path(app.instance_path, 'SECRET')
     try:
         with app.open_instance_resource("SECRET", "rb") as f:
@@ -25,7 +29,6 @@ def create_app(test_config=None):
         DATABASE=join_path(app.instance_path, "main.db"),
         SQLALCHEMY_DATABASE_URI="sqlite:///test.db"
     )
-    Path(app.instance_path).mkdir(parents=True, exist_ok=True)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
