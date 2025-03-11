@@ -20,7 +20,7 @@ def create_app(test_config=None):
             secret_key = f.read().decode('utf-8')
     except FileNotFoundError:
         with app.open_instance_resource(secret_path, 'xb') as f:
-            secret_key = token_urlsafe(64)
+            secret_key = token_urlsafe()
             f.write(secret_key.encode('utf-8'))
             print(f"Created secret key at {secret_path}")
 

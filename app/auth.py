@@ -8,6 +8,7 @@ from flask_login import login_user, login_required, logout_user
 from .database import db, User
 from .forms import LoginForm, SignupForm
 
+
 blueprint = Blueprint('auth', __name__)
 
 
