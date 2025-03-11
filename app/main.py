@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, send_file, redirect
 from flask_login import login_required, current_user
 
+from app.forms import PollForm, PollFieldForm
 
 blueprint = Blueprint("main", __name__)
 
@@ -49,5 +50,6 @@ def static(filepath):
 @blueprint.route("/create", methods=["GET", "POST"])
 @login_required
 def create():
+    form = PollForm()
     if request.method == "GET":
-        return render_template("create_election.html", current_user=current_user)
+        return render_template('create_election.html', form=form)

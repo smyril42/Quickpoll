@@ -52,7 +52,7 @@ a:hover {
   color: black;
 }
 
-table {
+/*table {
   width: 100%;
   border-collapse: collapse;
 }
@@ -78,7 +78,7 @@ td.action_column, th.action_column {
     white-space: nowrap;
     width: 0.01%;
 }
-
+*/
 
 .overlay-container {
     display: none;

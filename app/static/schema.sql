@@ -7,12 +7,13 @@ CREATE TABLE IF NOT EXISTS user (
     creation_date   TEXT,
     is_admin        INTEGER NOT NULL DEFAULT (0)
 );
-CREATE TABLE IF NOT EXISTS election (
+CREATE TABLE IF NOT EXISTS poll (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     name            TEXT NOT NULL,
     public_id       TEXT NOT NULL UNIQUE,
     hashed_password TEXT,
     creation_date   TEXT,
+    open_date       TEXT,
     expiration_date TEXT,
     type            INTEGER
 );
