@@ -1,10 +1,10 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, IntegerField, FieldList, SelectField
+from flask_wtf import FlaskForm, Form
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, FieldList, SelectField
 from wtforms.fields.form import FormField
 from wtforms.validators import DataRequired, Email
 
 
-__all__ = "LoginForm", "SignupForm"
+__all__ = "LoginForm", "SignupForm", "PollForm"
 
 
 class LoginForm(FlaskForm):
@@ -21,14 +21,15 @@ class SignupForm(FlaskForm):
     submit = SubmitField('Register')
 
 
-class PollFieldForm(FlaskForm):
-    name = StringField(validators=[DataRequired()])
+class PollFieldForm(Form):
+    name = StringField(validators=[])
     field_name = StringField('Name', validators=[DataRequired()])
     field_type = SelectField('Field Type', validators=[DataRequired()],
-                             choices=[(0, "Single Choice"),
-                                      (1, "Multi Choice"),
-                                      (2, "Open Text")])
-    #answer_possibilities = FieldList(StringField('Answer', validators=[DataRequired()]))
+                             choices=[(100, "Single Choice"),
+                                      (101, "Multi Choice"),
+                                      (102, "Ranking"),
+                                      (200, "Open Text")])
+    answer_possibilities = FieldList(StringField('Answer'), min_entries=1)
 
 
 class PollForm(FlaskForm):

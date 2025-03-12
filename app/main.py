@@ -3,7 +3,8 @@ from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
 
 
-from app.forms import PollForm, PollFieldForm
+from app.forms import PollForm
+
 
 blueprint = Blueprint("main", __name__)
 
@@ -53,5 +54,16 @@ def static(filepath):
 @login_required
 def create():
     form = PollForm()
-    if request.method == "GET":
-        return render_template('create_election.html', form=form)
+    if form.validate_on_submit():
+        poll_name = form.name.data
+        public_identifier = form.public_id.data
+        password = form.password.data
+        open_date = form.open_date.data
+        expiration_date = form.expiration_date.data
+        fields = form.fields.data
+
+        print(poll_name, public_identifier, password, open_date, expiration_date, fields)
+    else:
+        print(form.errors)
+
+    return render_template('create_election.html', form=form)
