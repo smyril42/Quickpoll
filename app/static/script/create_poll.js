@@ -1,37 +1,4 @@
-{% extends "base.html" %}
-
-{% block active_create_election %}class="active"{% endblock %}
-
-{% block title %}Create{% endblock %}
-
-{% block body %}
-    <h2>Create a new Poll</h2>
-
-    <form method="POST" action="{{ url_for("main.create") }}">
-        {{ form.hidden_tag() }}
-        <table id="fields-table" style="width: 25%">
-            <thead>
-                <tr><td>{{ form.name.label }}</td><td>{{ form.name }}</td></tr>
-                <tr><td>{{ form.public_id.label }}</td><td>{{ form.public_id }}</td></tr>
-                <tr><td>{{ form.password.label }}</td><td>{{ form.password }}</td></tr>
-                <tr><td>{{ form.open_date.label }}</td><td>{{ form.open_date }}</td></tr>
-                <tr><td>{{ form.expiration_date.label }}</td><td>{{ form.expiration_date }}</td></tr>
-                <tr><td colspan="2"><hr></td></tr>
-                <tr>
-                    <td><strong>{{ form.fields.label }}</strong></td>
-                    <td><button type="button" id="add-field" onclick="append_field()">New field</button>
-                    <button type="button" id="reset-fields" onclick="reset_fields()">Reset fields</button>
-                    </td>
-                </tr>
-            </thead>
-            <!-- Fields will be appended here -->
-        </table>
-        <br>
-        {{ form.submit }}
-    </form>
-
-    <script>
-    let number_fields = 0
+let number_fields = 0
 
     function append_field() {
         number_fields+=1
@@ -67,7 +34,6 @@
             document.getElementById(`answers-fields-${number_fields-1}-field_type`).hidden = Math.floor(selector.value / 100) !== 1;
         })
     }
-    append_field()
     function reset_fields() {
         if (!confirm("RESET?")) return
 
@@ -75,32 +41,3 @@
         number_fields = 0
         append_field()
     }
-    </script>
-
-
-    <br><br><br><br><br>
-    <label for="selector">Choose an option:</label>
-    <select id="selector">
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
-    </select>
-
-    <div id="content">Fallback</div>
-
-    <script>
-        document.getElementById("selector").addEventListener("change", function() {
-            let selectedValue = this.value;
-            let contentDiv = document.getElementById("content");
-
-            let contentMap = {
-                "option1": "<h3>Option 1 Selected</h3><p>This is the content for option 1.</p>",
-                "option2": "<h3>Option 2 Selected</h3><p>This is the content for option 2.</p>",
-                "option3": "<h3>Option 3 Selected</h3><p>This is the content for option 3.</p>"
-            };
-
-            contentDiv.innerHTML = contentMap[selectedValue] || "Please select an option to see the content.";
-        });
-    </script>
-
-{% endblock %}

@@ -66,4 +66,4 @@ def create():
     else:
         print(form.errors)
 
-    return render_template('create_election.html', form=form)
+    return render_template('create_poll.html', form=form)
