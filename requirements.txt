@@ -4,3 +4,4 @@ SQLAlchemy~=2.0.38
 WTForms~=3.2.1
 flask-wtf
 flask-sqlalchemy
+werkzeug

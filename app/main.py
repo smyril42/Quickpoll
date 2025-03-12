@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, send_file, redirect
 from flask_login import login_required, current_user
+from werkzeug.exceptions import NotFound
+
 
 from app.forms import PollForm, PollFieldForm
 
@@ -43,7 +45,7 @@ def profile():
 @blueprint.route("/static/<path:path>")
 def static(filepath):
     if request.referrer != 'http://127.0.0.1/':
-        return render_template('404.html')
+        raise NotFound()
     return send_file(filepath)
 
 
