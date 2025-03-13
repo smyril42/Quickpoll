@@ -38,11 +38,6 @@ def vote():
     return render_template("vote.html", form=form)
 
 
-@bp.route("/admin")
-def admin():
-    return render_template("admin.html")
-
-
 @bp.route("/profile")
 @login_required
 def profile():
