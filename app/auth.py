@@ -9,10 +9,10 @@ from .database import db, User
 from .forms import LoginForm, SignupForm
 
 
-blueprint = Blueprint('auth', __name__)
+bp = Blueprint('auth', __name__)
 
 
-@blueprint.route('/login', methods=['GET', 'POST'])
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -27,7 +27,7 @@ def login():
     return render_template('auth/login.html', form=form)
 
 
-@blueprint.route('/signup', methods=['GET', 'POST'])
+@bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
     if form.validate_on_submit():
@@ -49,7 +49,7 @@ def signup():
     return render_template('auth/signup.html', form=form)
 
 
-@blueprint.route('/logout')
+@bp.route('/logout')
 @login_required
 def logout():
     logout_user()

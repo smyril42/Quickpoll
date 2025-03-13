@@ -43,12 +43,12 @@ def create_app(test_config=None):
         db.create_all()
 
     # register blueprints
-    from app.main import blueprint as blueprint_main
-    from app.errorhandler import blueprint as blueprint_errorhandler
-    from app.auth import blueprint as blueprint_auth
+    from .main import bp as bp_main
+    from .errorhandler import bp as bp_errorhandler
+    from .auth import bp as bp_auth
 
-    app.register_blueprint(blueprint_main)
-    app.register_blueprint(blueprint_errorhandler)
-    app.register_blueprint(blueprint_auth)
+    app.register_blueprint(bp_main)
+    app.register_blueprint(bp_errorhandler)
+    app.register_blueprint(bp_auth)
 
     return app
