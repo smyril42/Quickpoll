@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm, Form
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, FieldList, SelectField
 from wtforms.fields.form import FormField
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired, Email, Optional
 
 
 __all__ = "LoginForm", "SignupForm", "PollForm"
@@ -29,14 +29,15 @@ class PollFieldForm(Form):
                                       (101, "Multi Choice"),
                                       (102, "Ranking"),
                                       (200, "Open Text")])
-    answer_possibilities = FieldList(StringField('Answer'), min_entries=1)
+    answer_possibilities = FieldList(StringField('Answer'))
 
 
 class PollForm(FlaskForm):
     name = StringField('Poll Name', validators=[DataRequired()])
     public_id = StringField('Public Identifier', validators=[DataRequired()])
     password = PasswordField('Password')
-    open_date = DateField('Open on')
-    expiration_date = DateField('Close on')
+    open_date = DateField('Open on', validators=[Optional()])
+    expiration_date = DateField('Close on', validators=[Optional()])
+    type_ = SelectField("Type")
     fields = FieldList(FormField(PollFieldForm), min_entries=1)
     submit = SubmitField('Submit')
