@@ -1,9 +1,10 @@
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from flask_login import UserMixin
 
 
-__all__ = "db", "User"
+__all__ = "db", "User", "Poll", "Question"
 
 
 class Base(DeclarativeBase):
@@ -41,3 +42,43 @@ class User(UserMixin, db.Model):
 
     def get_id(self):
         return str(self.id)
+
+
+class Poll(db.Model):
+    id: Mapped[int] = mapped_column(db.Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(db.String, nullable=False)
+    public_id: Mapped[int] = mapped_column(db.Integer, unique=True, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(db.String)
+    creation_date = mapped_column(db.DateTime)
+    open_date = mapped_column(db.DateTime)
+    expiration_date = mapped_column(db.DateTime)
+
+    def __init__(self, name, public_id, hashed_password, open_date, expiration_date):
+        self.name = name
+        self.public_id = public_id
+        self.hashed_password=hashed_password
+        self.creation_date=datetime.today()
+        self.open_date=open_date
+        self.expiration_date=expiration_date
+
+
+class Question(db.Model):
+    id: Mapped[int] = mapped_column(db.Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(db.String, nullable=False)
+    poll_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey("poll.id"))
+    type_: Mapped[int] = mapped_column(db.Integer, nullable=False)
+    choice0: Mapped[str] = mapped_column(db.String)
+    choice1: Mapped[str] = mapped_column(db.String)
+    choice2: Mapped[str] = mapped_column(db.String)
+    choice3: Mapped[str] = mapped_column(db.String)
+    choice4: Mapped[str] = mapped_column(db.String)
+
+    def __init__(self, name, poll_id, type_, choices: list):
+        self.name = name
+        self.poll_id=poll_id
+        self.type_=type_
+        self.choice0=choices[0]
+        self.choice1=choices[1]
+        self.choice2=choices[2]
+        self.choice3=choices[3]
+        self.choice4=choices[4]

@@ -38,7 +38,6 @@ class PollForm(FlaskForm):
     password = PasswordField('Password')
     open_date = DateField('Open on', validators=[Optional()])
     expiration_date = DateField('Close on', validators=[Optional()])
-    type_ = SelectField("Type")
     fields = FieldList(FormField(PollFieldForm), min_entries=1)
     submit = SubmitField('Submit')
 
