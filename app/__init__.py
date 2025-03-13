@@ -46,9 +46,11 @@ def create_app(test_config=None):
     from .main import bp as bp_main
     from .errorhandler import bp as bp_errorhandler
     from .auth import bp as bp_auth
+    from .admin import bp as bp_admin
 
     app.register_blueprint(bp_main)
     app.register_blueprint(bp_errorhandler)
     app.register_blueprint(bp_auth)
+    app.register_blueprint(bp_admin)
 
     return app
