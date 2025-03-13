@@ -4,7 +4,31 @@
 {% block active_vote %}class="active"{% endblock %}
 
 {% block body %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+</head>
 
-Voting Page!
+<div class="column is-4 is-offset-4">
+
+    <div style="margin-top: 30px" class="box">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="notification is-danger">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <h3 class="title">Vote!</h3>
+        <form method="POST" action="{{ url_for("main.vote") }}">
+            {{ form.hidden_tag() }}
+            {{ form.poll_id(placeholder="Poll Identifier", class="input is-large", style="margin-bottom: .5em") }}
+            {{ form.voting_code(placeholder="Voting Code", class="input is-large", style="margin-bottom: .5em")}}
+            {{ form.submit(class="button is-block is-info is-large is-fullwidth", style="margin-top: .5em") }}
+        </form>
+    </div>
+</div>
+
+
+
 
 {% endblock %}

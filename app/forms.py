@@ -4,7 +4,7 @@ from wtforms.fields.form import FormField
 from wtforms.validators import DataRequired, Email, Optional
 
 
-__all__ = "LoginForm", "SignupForm", "PollForm"
+__all__ = "LoginForm", "SignupForm", "PollForm", "VoteForm"
 
 
 class LoginForm(FlaskForm):
@@ -41,3 +41,14 @@ class PollForm(FlaskForm):
     type_ = SelectField("Type")
     fields = FieldList(FormField(PollFieldForm), min_entries=1)
     submit = SubmitField('Submit')
+
+
+class VoteForm(FlaskForm):
+    poll_id = StringField('Poll Identifier', validators=[DataRequired()])
+    password = StringField('Poll Password')
+    voting_code = StringField('Voting Code', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
+class PollForm(FlaskForm):
+    ...

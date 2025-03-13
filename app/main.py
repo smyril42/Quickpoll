@@ -5,6 +5,7 @@ from werkzeug.exceptions import NotFound
 
 from app.forms import PollForm
 
+from .forms import PollForm, PollFieldForm, VoteForm
 
 blueprint = Blueprint("main", __name__)
 
@@ -27,9 +28,17 @@ def help_page():
     )
 
 
-@blueprint.route("/vote")
+@blueprint.route("/vote", methods=["GET", "POST"])
 def vote():
-    return render_template("vote.html")
+    form = VoteForm()
+    if form.validate_on_submit():
+        poll_id = form.poll_id.data
+        voting_code = form.voting_code.data
+        print(poll_id, voting_code)
+    else:
+        print(form.errors)
+
+    return render_template("vote.html", form=form)
 
 
 @blueprint.route("/admin")
@@ -67,3 +76,9 @@ def create():
         print(form.errors)
 
     return render_template('create_poll.html', form=form)
+
+
+@blueprint.route("/poll", methods=["GET", "POST"])
+def poll():
+    form = ...
+    return render_template("poll.html", form=form)

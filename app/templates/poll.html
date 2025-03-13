@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block active_profile %}class="active"{% endblock %}
+
+{% block title %}Poll{% endblock %}
+
+{% block body %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umfrage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .poll-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="poll-container">
+        <h2>Was ist deine Lieblingsjahreszeit?</h2>
+        <form id="pollForm">
+            <input type="radio" name="season" value="Frühling"> Frühling<br>
+            <input type="radio" name="season" value="Sommer"> Sommer<br>
+            <input type="radio" name="season" value="Herbst"> Herbst<br>
+            <input type="radio" name="season" value="Winter"> Winter<br>
+            <button type="button" onclick="submitVote()">Abstimmen</button>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function submitVote() {
+            let options = document.getElementsByName("season");
+            let selectedValue = "";
+            
+            for (let option of options) {
+                if (option.checked) {
+                    selectedValue = option.value;
+                    break;
+                }
+            }
+
+            if (selectedValue) {
+                document.getElementById("result").innerHTML = 
+                    "<strong>Danke für deine Stimme!</strong><br>Du hast für <em>" + selectedValue + "</em> gestimmt.";
+            } else {
+                document.getElementById("result").innerHTML = "<strong>Bitte wähle eine Option!</strong>";
+            }
+        }
+    </script>
+
+</body>
+{% endblock %}
