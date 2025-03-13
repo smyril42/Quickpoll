@@ -20,7 +20,8 @@
                 {% endif %}
             {% endwith %}
             <h3 class="title">Sign Up</h3>
-            <form method="POST" action="/signup">
+            <form method="POST" action="{{ url_for("auth.signup") }}">
+                {{ form.hidden_tag() }}
                 {{ form.email(placeholder="Email", class="input is-large", style="margin-bottom: .5em") }}
                 {{ form.username(placeholder="Username", class="input is-large", style="margin-bottom: .5em") }}
                 {{ form.password(placeholder="Password", class="input is-large", style="margin-bottom: .5em") }}
