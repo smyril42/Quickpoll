@@ -55,6 +55,8 @@ class Poll(db.Model):
     open_date = mapped_column(db.DateTime)
     expiration_date = mapped_column(db.DateTime)
 
+    questions = db.relationship("Question")
+
     def __init__(self, owner_id, name, public_id, hashed_password, salt, open_date, expiration_date):
         self.owner_id = owner_id
         self.name = name
