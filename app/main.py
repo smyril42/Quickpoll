@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, request, send_file, redirect
+from flask import Blueprint, render_template, request, send_file, redirect, flash
 from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
 
-from .forms import PollForm, PollFieldForm, VoteForm
+from .forms import PollForm, VoteForm
+from .database import db, Poll, Question
+from .auth import hashed, generate_salt
 
 bp = Blueprint("main", __name__)
 
@@ -55,16 +57,23 @@ def static(filepath):
 @login_required
 def create():
     form = PollForm()
-    if form.validate_on_submit():
-        poll_name = form.name.data
+    if request.method=="POST": #form.validate_on_submit():
         public_identifier = form.public_id.data
-        password = form.password.data
-        open_date = form.open_date.data
-        expiration_date = form.expiration_date.data
-        fields = form.fields.data
-
-        print(poll_name, public_identifier, password, open_date, expiration_date, fields)
-    else:
+        if Poll.query.get(public_identifier):
+            flash("This Identifier is already in use!")
+        else:
+            pw = form.password.data
+            salt = generate_salt() if pw else None
+            hashed_pw = hashed(pw, salt) if pw else None
+            poll = Poll(current_user.id, form.name.data, public_identifier, hashed_pw,
+                        salt, form.open_date.data, form.expiration_date.data)
+            db.session.add(poll)
+            db.session.flush()
+            db.session.add_all([Question(
+                field["field_name"], poll.id, field["field_type"], field["answer_possibilities"]
+            ) for field in form.fields.data])
+            db.session.commit()
+    elif form.errors:
         print(form.errors)
 
     return render_template('create_poll.html', form=form)

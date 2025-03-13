@@ -46,17 +46,21 @@ class User(UserMixin, db.Model):
 
 class Poll(db.Model):
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True, autoincrement=True)
+    owner_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name: Mapped[str] = mapped_column(db.String, nullable=False)
     public_id: Mapped[int] = mapped_column(db.Integer, unique=True, nullable=False)
     hashed_password: Mapped[str] = mapped_column(db.String)
+    salt: Mapped[str] = mapped_column(db.String)
     creation_date = mapped_column(db.DateTime)
     open_date = mapped_column(db.DateTime)
     expiration_date = mapped_column(db.DateTime)
 
-    def __init__(self, name, public_id, hashed_password, open_date, expiration_date):
+    def __init__(self, owner_id, name, public_id, hashed_password, salt, open_date, expiration_date):
+        self.owner_id = owner_id
         self.name = name
         self.public_id = public_id
         self.hashed_password=hashed_password
+        self.salt=salt
         self.creation_date=datetime.today()
         self.open_date=open_date
         self.expiration_date=expiration_date
@@ -65,7 +69,7 @@ class Poll(db.Model):
 class Question(db.Model):
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(db.String, nullable=False)
-    poll_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey("poll.id"))
+    poll_id: Mapped[int] = mapped_column(db.Integer, db.ForeignKey("poll.id"), nullable=False)
     type_: Mapped[int] = mapped_column(db.Integer, nullable=False)
     choice0: Mapped[str] = mapped_column(db.String)
     choice1: Mapped[str] = mapped_column(db.String)
@@ -77,8 +81,4 @@ class Question(db.Model):
         self.name = name
         self.poll_id=poll_id
         self.type_=type_
-        self.choice0=choices[0]
-        self.choice1=choices[1]
-        self.choice2=choices[2]
-        self.choice3=choices[3]
-        self.choice4=choices[4]
+        self.choice0, self.choice1, self.choice2, self.choice3, self.choice4=choices
