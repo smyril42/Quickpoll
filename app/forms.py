@@ -8,7 +8,7 @@ __all__ = "LoginForm", "SignupForm", "PollForm", "VoteForm"
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Username', validators=[DataRequired()])
+    email = StringField('Username', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')

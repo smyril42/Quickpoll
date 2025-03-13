@@ -2,7 +2,7 @@ from string import ascii_letters, digits, punctuation
 from datetime import datetime
 from hashlib import sha256
 from random import SystemRandom
-from flask import Blueprint, render_template, request, redirect, flash, url_for
+from flask import Blueprint, render_template, redirect, flash, url_for
 from flask_login import login_user, login_required, logout_user
 
 from .database import db, User
@@ -16,19 +16,15 @@ blueprint = Blueprint('auth', __name__)
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        email = form.email.data
-        password = form.password.data
-        remember = bool(form.remember.data)
-
-        user = User.query.filter_by(email=email).first()
-        if user is None or user.hashed_password != hashed(password, user.salt):
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is None or user.hashed_password != hashed(form.password.data, user.salt):
             flash('Invalid email or password! Please try again.')
             return redirect(url_for("auth.login"))
-        login_user(user, remember=remember)
+        login_user(user, remember=bool(form.remember.data))
         return redirect(url_for("main.profile"))
-    else:
+    elif form.errors:
         print(form.errors)
-    return render_template('login.html', form=form)
+    return render_template('auth/login.html', form=form)
 
 
 @blueprint.route('/signup', methods=['GET', 'POST'])
@@ -37,22 +33,20 @@ def signup():
     if form.validate_on_submit():
         email = form.email.data
         username = form.username.data
-        password = form.password.data
 
         if User.query.filter_by(email=email).first() is not None:
             flash("This email is already in use.")
-            return redirect(url_for("auth.signup"))
-        if User.query.filter_by(username=username).first() is not None:
+        elif User.query.filter_by(username=username).first() is not None:
             flash("This Username is already taken.")
-            return redirect(url_for("auth.signup"))
-        salt = generate_salt()
-        db.session.add(
-            User(username, email, hashed(password, salt), salt, datetime.today()))
-        db.session.commit()
-        return redirect(url_for("auth.login"))
-    else:
+        else:
+            salt = generate_salt()
+            db.session.add(
+                User(username, email, hashed(form.password.data, salt), salt, datetime.today()))
+            db.session.commit()
+            return redirect(url_for("auth.login"))
+    elif form.errors:
         print(form.errors)
-    return render_template('signup.html', form=form)
+    return render_template('auth/signup.html', form=form)
 
 
 @blueprint.route('/logout')
