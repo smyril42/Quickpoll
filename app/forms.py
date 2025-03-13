@@ -48,7 +48,3 @@ class VoteForm(FlaskForm):
     password = StringField('Poll Password')
     voting_code = StringField('Voting Code', validators=[DataRequired()])
     submit = SubmitField('Submit')
-
-
-class PollForm(FlaskForm):
-    ...
