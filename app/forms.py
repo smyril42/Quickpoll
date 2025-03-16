@@ -29,7 +29,7 @@ class PollFieldForm(Form):
                                       (101, "Multi Choice"),
                                       (102, "Ranking"),
                                       (200, "Open Text")])
-    answer_possibilities = FieldList(StringField('Answer'))
+    choices = FieldList(StringField('Answer'))
 
 
 class PollForm(FlaskForm):

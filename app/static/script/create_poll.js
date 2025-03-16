@@ -20,11 +20,11 @@ let number_fields = 0
             `</td></tr>`;
         tbody_answers.innerHTML = `` +
             `<tr><td><label for="fields-${number_fields-1}-anwser_possibilities">Choices</label></td>` +
-            `             <td><input id="fields-${number_fields-1}-anwser_possibilities-0" name="fields-${number_fields-1}-answer_possibilities-0" type="text"></td></tr>` +
-            `<tr><td></td><td><input id="fields-${number_fields-1}-answer_possibilities-1" name="fields-${number_fields-1}-answer_possibilities-1" type="text"></td></tr>` +
-            `<tr><td></td><td><input id="fields-${number_fields-1}-answer_possibilities-2" name="fields-${number_fields-1}-answer_possibilities-2" type="text"></td></tr>` +
-            `<tr><td></td><td><input id="fields-${number_fields-1}-answer_possibilities-3" name="fields-${number_fields-1}-answer_possibilities-3" type="text"></td></tr>` +
-            `<tr><td></td><td><input id="fields-${number_fields-1}-answer_possibilities-4" name="fields-${number_fields-1}-answer_possibilities-4" type="text"></td></tr>`;
+            `             <td><input id="fields-${number_fields-1}-choices-0" name="fields-${number_fields-1}-choices-0" type="text"></td></tr>` +
+            `<tr><td></td><td><input id="fields-${number_fields-1}-choices-1" name="fields-${number_fields-1}-choices-1" type="text"></td></tr>` +
+            `<tr><td></td><td><input id="fields-${number_fields-1}-choices-2" name="fields-${number_fields-1}-choices-2" type="text"></td></tr>` +
+            `<tr><td></td><td><input id="fields-${number_fields-1}-choices-3" name="fields-${number_fields-1}-choices-3" type="text"></td></tr>` +
+            `<tr><td></td><td><input id="fields-${number_fields-1}-choices-4" name="fields-${number_fields-1}-choices-4" type="text"></td></tr>`;
 
         document.getElementById("fields-table").appendChild(tbody);
         document.getElementById("fields-table").appendChild(tbody_answers);

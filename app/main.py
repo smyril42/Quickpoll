@@ -70,7 +70,7 @@ def create():
             db.session.add(poll)
             db.session.flush()
             db.session.add_all([Question(
-                field["field_name"], poll.id, field["field_type"], field["answer_possibilities"]
+                field["field_name"], poll.id, field["field_type"], field["choices"]
             ) for field in form.fields.data])
             db.session.commit()
     elif form.errors:
