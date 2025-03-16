@@ -77,9 +77,3 @@ def create():
         print(form.errors)
 
     return render_template('create_poll.html', form=form)
-
-
-@bp.route("/poll", methods=["GET", "POST"])
-def poll():
-    form = ...
-    return render_template("poll.html", form=form)
