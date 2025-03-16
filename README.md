@@ -106,11 +106,11 @@ WORK IN PROGRESS...
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## License 
-This project is currently private and therefore does not yet need a license.
+This project is licensed under the GNU General Public License.
+You can find it <a href="https://github.com/smyril42/Quickpoll/blob/main/LICENSE.md">here</a>.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contact
 
 WORK IN PROGRESS...
-
