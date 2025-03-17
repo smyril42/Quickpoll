@@ -29,15 +29,38 @@ def help_page():
 
 @bp.route("/vote", methods=["GET", "POST"])
 def vote():
+    hidden = True
     form = VoteForm()
     if form.validate_on_submit():
-        poll_id = form.poll_id.data
-        voting_code = form.voting_code.data
-        print(poll_id, voting_code)
-    else:
+        poll = Poll.query.filter_by(public_id=form.poll_id.data).first()
+        if poll is None:
+            flash("Poll not found!")
+            return render_template("vote.html", form=form, hidden=hidden)
+
+        hashed_secret = hashed(form.voting_code.data, poll.salt)
+
+        # if password/code is incorrect
+        if not (
+                poll.hashed_password and hashed_secret == poll.hashed_password or
+                (not poll.hashed_password and hashed_secret in [i["hashed_code"] for i in poll.codes])
+        ):
+            flash("Invalid Code/Password!")
+            return render_template("vote.html", form=form, hidden=hidden)
+
+        hidden = False
+        for question in poll.questions:
+            form.fields.append_entry()
+            form.fields[-1].type_ = question.type_
+            form.fields[-1].field_name = question.name
+            form.fields[-1].choices = question.choices if (question.type_ // 100) == 1 else tuple()
+
+        if form.includes_content.data:
+            ...
+
+    elif form.errors:
         print(form.errors)
 
-    return render_template("vote.html", form=form)
+    return render_template("vote.html", form=form, hidden=hidden)
 
 
 @bp.route("/profile")

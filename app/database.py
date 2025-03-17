@@ -86,6 +86,9 @@ class Question(db.Model):
         self.type_=type_
         self.choice0, self.choice1, self.choice2, self.choice3, self.choice4=choices
 
+    def choices(self):
+        return self.choice0, self.choice1, self.choice2, self.choice3, self.choice4
+
 
 class Code(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
