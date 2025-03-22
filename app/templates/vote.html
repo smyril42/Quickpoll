@@ -21,23 +21,32 @@
         {% endwith %}
         <h3 class="title">Vote</h3>
         <form method="POST" action="{{ url_for("main.vote") }}">
-            <p>{{ hidden }}</p>
             {{ form.hidden_tag() }}
-            {{ form.poll_id(placeholder="Poll Identifier", class="input is-large", style="margin-bottom: .5em") }}
-            {{ form.voting_code(placeholder="Code/Password", class="input is-large", style="margin-bottom: .5em")}}
+            {{ form.poll_id(placeholder="Poll Identifier", class="input is-large", style="margin-bottom: .5em", autofocus="") }}
+            {{ form.voting_code(placeholder="Code/Password", class="input is-large", style="margin-bottom: .5em", autofocus="")}}
             {% if not hidden %}
                 {{ form.includes_content(hidden=True, default=True) }}
-                <table>
                     {% for question in form.fields %}
-                        <tr><td colspan="2">{{ question.field_name }}</td></tr>
+                        {% set question_loop = loop %}
+                        <strong>{{ question.field_name }}</strong><br>
 
-                        {% if (question.type_ // 100)==1 %}
-                            <tr><td>{{ question.choices() }}</td></tr>
+                        {% if (question.type_//100) == 1 %}
+                            {% for choice in question.choices() %}
+                                    {% if question.type_ == 100 %}
+                                        <input type="radio" id="{{ question_loop.index0 }}-{{ loop.index0 }}" name="{{ question_loop.index0 }}" value="{{ loop.index0 }}">
+                                    {% elif question.type_ == 101 %}
+                                        <input type="checkbox" id="{{ question_loop.index0 }}-{{ loop.index0 }}" name="{{ question_loop.index0 }}-{{ loop.index0 }}">
+                                    {% elif question.type_ == 102 %}
+                                        <p>Not Implemented!</p>
+                                    {% endif %}
+                                <label for="{{ question_loop.index0 }}-{{ loop.index0 }}">{{ choice }}</label><br>
+                            {% endfor %}
+                        {% elif (question.type_//100) == 2 %}
+                            {% if question.type_ == 200 %}
+                                <textarea class="textarea" rows="2" id="{{ question_loop.index0 }}" name="{{ question_loop.index0 }}" placeholder="Answer..."></textarea><br>
+                            {% endif %}
                         {% endif %}
-
                     {% endfor %}
-                </table>
-                <p>Hidden</p>
             {% endif %}
             {{ form.submit(class="button is-block is-info is-large is-fullwidth", style="margin-top: .5em") }}
         </form>
