@@ -4,7 +4,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from flask_login import UserMixin
 
 
-__all__ = "db", "User", "Poll", "Question"
+__all__ = "db", "User", "Poll", "Question", "Answer", "QuestionAnswer"
 
 
 class Base(DeclarativeBase):
@@ -57,6 +57,7 @@ class Poll(db.Model):
 
     questions = db.relationship("Question")
     codes = db.relationship("Code")
+    answers = db.relationship("Answer")
 
     def __init__(self, owner_id, name, public_id, hashed_password, salt, open_date, expiration_date):
         self.owner_id = owner_id
@@ -80,11 +81,13 @@ class Question(db.Model):
     choice3: Mapped[str] = mapped_column()
     choice4: Mapped[str] = mapped_column()
 
+    question_answers = db.relationship("QuestionAnswer")
+
     def __init__(self, name, poll_id, type_, choices: list):
         self.name = name
-        self.poll_id=poll_id
-        self.type_=type_
-        self.choice0, self.choice1, self.choice2, self.choice3, self.choice4=choices
+        self.poll_id = poll_id
+        self.type_ = type_
+        self.choice0, self.choice1, self.choice2, self.choice3, self.choice4 = choices
 
     def choices(self):
         return self.choice0, self.choice1, self.choice2, self.choice3, self.choice4
@@ -94,3 +97,34 @@ class Code(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     poll_id: Mapped[int] = mapped_column(db.ForeignKey("poll.id"), nullable=False)
     hashed_code: Mapped[str] = mapped_column(nullable=False)
+
+
+class Answer(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    poll_id: Mapped[int] = mapped_column(db.ForeignKey("poll.id"), nullable=False)
+    date: Mapped[datetime] =  mapped_column()
+
+    questions = db.relationship("QuestionAnswer")
+
+    def __init__(self, poll_id, date):
+        self.poll_id = poll_id
+        self.date = date
+
+
+class QuestionAnswer(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    answer_id: Mapped[int] = mapped_column(db.ForeignKey("answer.id"), nullable=False)
+    question_id: Mapped[int] = mapped_column(db.ForeignKey("question.id"), nullable=False)
+    choice0: Mapped[str] = mapped_column()
+    choice1: Mapped[str] = mapped_column()
+    choice2: Mapped[str] = mapped_column()
+    choice3: Mapped[str] = mapped_column()
+    choice4: Mapped[str] = mapped_column()
+
+    def __init__(self, question_id, answer_id, choices):
+        self.answer_id = answer_id
+        self.question_id = question_id
+        self.choice0, self.choice1, self.choice2, self.choice3, self.choice4 = choices
+
+    def choices(self):
+        return self.choice0, self.choice1, self.choice2, self.choice3, self.choice4

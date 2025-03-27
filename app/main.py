@@ -1,10 +1,12 @@
+from datetime import datetime
 from flask import Blueprint, render_template, request, send_file, redirect, flash
 from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
 
 from .forms import PollForm, VoteForm
-from .database import db, Poll, Question
+from .database import db, Poll, Question, Answer, QuestionAnswer
 from .auth import hashed, generate_salt
+
 
 bp = Blueprint("main", __name__)
 
@@ -29,13 +31,13 @@ def help_page():
 
 @bp.route("/vote", methods=["GET", "POST"])
 def vote():
-    hidden = True
+    print(dict(request.form))
     form = VoteForm()
     if form.validate_on_submit():
         poll = Poll.query.filter_by(public_id=form.poll_id.data).first()
         if poll is None:
             flash("Poll not found!")
-            return render_template("vote.html", form=form, hidden=hidden)
+            return render_template("vote.html", form=form, hidden=True)
 
         hashed_secret = hashed(form.voting_code.data, poll.salt)
 
@@ -45,22 +47,40 @@ def vote():
                 (not poll.hashed_password and hashed_secret in [i["hashed_code"] for i in poll.codes])
         ):
             flash("Invalid Code/Password!")
-            return render_template("vote.html", form=form, hidden=hidden)
+            return render_template("vote.html", form=form, hidden=True)
 
-        hidden = False
         for question in poll.questions:
             form.fields.append_entry()
             form.fields[-1].type_ = question.type_
             form.fields[-1].field_name = question.name
             form.fields[-1].choices = question.choices if (question.type_ // 100) == 1 else tuple()
 
+        form_data = dict(request.form)
         if form.includes_content.data:
-            ...
+            answer = Answer(poll.id, datetime.today())
+            db.session.add(answer)
+            db.session.flush()
+            questions = []
+            for i, question in enumerate(poll.questions):
+                if question.type_ in (100, 200):
+                    choices = form_data[i] + 4 * [""]
+                elif question.type_ // 100 == 1:
+                    choices = 5*[""]
+                    for key in form_data.keys():
+                        if key.startswith(f"{i}-"):
+                            choices[int(key.split("-")[-1])] = "true"
+                else:
+                    raise RuntimeError(f"Unknown question type: {question.type_}")
+                questions.append(QuestionAnswer(question.id, answer.id, choices))
+            db.session.add_all(questions)
+            db.session.commit()
+
+        return render_template("vote.html", form=form, hidden=False)
 
     elif form.errors:
         print(form.errors)
 
-    return render_template("vote.html", form=form, hidden=hidden)
+    return render_template("vote.html", form=form, hidden=True)
 
 
 @bp.route("/profile")
